@@ -11,6 +11,7 @@ public class BooleanSearchEngine implements SearchEngine {
     protected String[] words; // Заготовка. Будем собирать слова из текущей страницы, разделенные по regex, в массив.
     protected Map<String, Integer> frequency = new HashMap<>(); // Заготовка. Промежуточный Map. Будем собирать слова из массива words в Map с key - слово, value - количество совпадений на странице.
     protected Map<String, List<PageEntry>> result = new HashMap<>(); // Заготовка. Результирующий Map. Будем собирать для каждого ключа-слова соответствующее значение-PageEntry().
+
     public BooleanSearchEngine(File pdfsDir) throws IOException { // pdfsDir - директория для поиска, List<File> fileList - list для найденных файлов.
         try {
             if (pdfsDir.isDirectory()) { // Проверка корректности пути - pdfsDir является папкой.
@@ -30,9 +31,9 @@ public class BooleanSearchEngine implements SearchEngine {
                                 word = word.toLowerCase();
                                 frequency.put(word, frequency.getOrDefault(word, 0) + 1); // Собираем промежуточный Map из слов и их количества в пределах каждого файла.
                             }
-                            for(Map.Entry<String, Integer> iteration : frequency.entrySet()) {
+                            for (Map.Entry<String, Integer> iteration : frequency.entrySet()) {
                                 String keyWord = iteration.getKey(); // Для каждой пары промежуточного Map "ключ (слово)- значение (количество)" извлекаем ключ.
-                                if(!result.containsKey(keyWord)) { // Если результирующий Map поиска не содержит ключ промежуточного Map, заполняем новую пару "Слово - PageEntry"
+                                if (!result.containsKey(keyWord)) { // Если результирующий Map поиска не содержит ключ промежуточного Map, заполняем новую пару "Слово - PageEntry"
                                     List<PageEntry> newEntry = new ArrayList<>();
                                     newEntry.add(new PageEntry(doc.getDocumentInfo().getTitle(), pages, iteration.getValue()));
                                     result.put(keyWord, newEntry);
