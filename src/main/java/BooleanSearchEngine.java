@@ -35,10 +35,10 @@ public class BooleanSearchEngine implements SearchEngine {
                                 String keyWord = iteration.getKey(); // Для каждой пары промежуточного Map "ключ (слово)- значение (количество)" извлекаем ключ.
                                 if (!result.containsKey(keyWord)) { // Если результирующий Map поиска не содержит ключ промежуточного Map, заполняем новую пару "Слово - PageEntry"
                                     List<PageEntry> newEntry = new ArrayList<>();
-                                    newEntry.add(new PageEntry(doc.getDocumentInfo().getTitle(), pages, iteration.getValue()));
+                                    newEntry.add(new PageEntry(doc.getDocumentInfo().getTitle(), i, iteration.getValue()));
                                     result.put(keyWord, newEntry);
                                 } else { // Если ключ промежуточного Map встретился в результирующем Map поиска (по результатам сканирования предыдущих файлов или страниц), обновляем List<PageEntry> для ключа.
-                                    result.get(keyWord).add(new PageEntry(doc.getDocumentInfo().getTitle(), pages, iteration.getValue()));
+                                    result.get(keyWord).add(new PageEntry(doc.getDocumentInfo().getTitle(), i, iteration.getValue()));
                                 }
                             }
                         }
@@ -51,15 +51,30 @@ public class BooleanSearchEngine implements SearchEngine {
         }
     }
 
+//    @Override
+//    public List<PageEntry> search(String word) {
+//        if (result.containsKey(word.toLowerCase())) {
+//            List<PageEntry> sort = result.get(word);
+//            return sort.stream().sorted(Comparator.naturalOrder()).collect(Collectors.toList());
+//        } else { // В случае отсутствия слова в результате поиска, возвращается значение по-умолчанию.
+//            List<PageEntry> basicList = new ArrayList<>();
+//            basicList.add(new PageEntry("Basic.pdf", 0, 0));
+//            return basicList;
+//        }
+//    }
+
     @Override
-    public List<PageEntry> search(String word) {
-        if (result.containsKey(word.toLowerCase())) {
-            List<PageEntry> sort = result.get(word);
-            return sort.stream().sorted(Comparator.naturalOrder()).collect(Collectors.toList());
-        } else { // В случае отсутствия слова в результате поиска, возвращается значение по-умолчанию.
-            List<PageEntry> basicList = new ArrayList<>();
-            basicList.add(new PageEntry("Basic.pdf", 0, 0));
-            return basicList;
+    public List<PageEntry> search(String text) {
+        String[] splitText = text.split("\\P{IsAlphabetic}+");
+        List<PageEntry> pageEntry = null;
+        for(String word : splitText) {
+            if (result.containsKey(word.toLowerCase())) {
+                pageEntry = result.get(word);
+            } else { // В случае отсутствия слова в результате поиска, возвращается значение по-умолчанию.
+                pageEntry = new ArrayList<>();
+                pageEntry.add(new PageEntry("Basic.pdf", 0, 0));
+            }
         }
+        return pageEntry;
     }
 }

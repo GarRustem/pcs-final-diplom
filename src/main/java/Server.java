@@ -19,7 +19,7 @@ public class Server {
                      PrintWriter output = new PrintWriter(client.getOutputStream(), true)) {
 
                     System.out.println("Client " + client.getPort() + " is patched.");
-                    output.println("Enter the word for search.");
+                    output.println("Enter the text for search.");
 
                     String word = input.readLine();
 
