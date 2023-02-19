@@ -15,7 +15,6 @@ public class Client {
 
             Scanner scanner = new Scanner(System.in);
             output.println(scanner.nextLine());
-//            System.out.println(reader.readLine());
 
         } catch (IOException e) {
             e.printStackTrace();

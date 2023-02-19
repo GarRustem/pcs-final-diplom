@@ -10,7 +10,7 @@ public class Server {
         BooleanSearchEngine engine = new BooleanSearchEngine(new File("D:\\1. Workplace\\1. Java\\NetologyHW\\pcs-final-diplom\\pdfs"));
 
         try (ServerSocket server = new ServerSocket(ServerConfig.PORT)) {
-            System.out.println("Server is running");
+            System.out.println("Server is running"); //  онсоль не выводит кириллицу.  одировка помогает грамотно отображать только кириллицу названий файлов.
 
             while (true) {
                 try (Socket client = server.accept();
