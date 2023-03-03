@@ -8,7 +8,7 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        BooleanSearchEngine engine = new BooleanSearchEngine(new File("D:\\1. Workplace\\1. Java\\NetologyHW\\pcs-final-diplom\\pdfs"));
+        BooleanSearchEngine engine = new BooleanSearchEngine(new File("pdfs"));
 
         try (ServerSocket server = new ServerSocket(ServerConfig.PORT)) {
             System.out.println("Server is running"); //  онсоль не выводит кириллицу.  одировка помогает грамотно отображать только кириллицу названий файлов.
