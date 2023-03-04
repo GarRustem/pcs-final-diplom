@@ -11,7 +11,7 @@ public class Main {
         BooleanSearchEngine engine = new BooleanSearchEngine(new File("pdfs"));
 
         try (ServerSocket server = new ServerSocket(ServerConfig.PORT)) {
-            System.out.println("Server is running"); //  онсоль не выводит кириллицу.  одировка помогает грамотно отображать только кириллицу названий файлов.
+            System.out.println("Server is running");
 
             while (true) {
                 try (Socket client = server.accept();
@@ -23,9 +23,13 @@ public class Main {
 
                     String word = input.readLine();
 
-                    Gson gson = new Gson();
-                    String saveJsonForm = gson.toJson(engine.search(word));
-                    System.out.println(saveJsonForm);
+                    try {
+                        Gson gson = new Gson();
+                        String saveJsonForm = gson.toJson(engine.search(word));
+                        output.println(saveJsonForm);
+                    } catch (NullPointerException e) {
+                        output.println(e.getMessage() + " - " + "The dictionary does not contain the word you are looking for.");
+                    }
                 }
             }
         } catch (IOException e) {

@@ -5,6 +5,7 @@ import com.itextpdf.kernel.pdf.canvas.parser.PdfTextExtractor;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class BooleanSearchEngine implements SearchEngine {
     protected String[] words; // Заготовка. Будем собирать слова из текущей страницы, разделенные по regex, в массив.
@@ -51,17 +52,11 @@ public class BooleanSearchEngine implements SearchEngine {
     }
 
     @Override
-    public List<PageEntry> search(String text) {
-        String[] splitText = text.split("\\P{IsAlphabetic}+");
+    public List<PageEntry> search(String word) {
         List<PageEntry> pageEntry = null;
-        for(String word : splitText) {
-            if (result.containsKey(word.toLowerCase())) {
-                pageEntry = result.get(word);
-            } else { // В случае отсутствия слова в результате поиска, возвращается значение по-умолчанию.
-                pageEntry = new ArrayList<>();
-                pageEntry.add(new PageEntry("Basic.pdf", 0, 0));
-            }
+        if (result.containsKey(word.toLowerCase())) {
+            pageEntry = result.get(word);
         }
-        return pageEntry;
+        return pageEntry.stream().sorted().collect(Collectors.toList());
     }
 }
