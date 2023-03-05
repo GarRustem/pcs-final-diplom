@@ -23,13 +23,9 @@ public class Main {
 
                     String word = input.readLine();
 
-                    try {
                         Gson gson = new Gson();
                         String saveJsonForm = gson.toJson(engine.search(word));
                         output.println(saveJsonForm);
-                    } catch (NullPointerException e) {
-                        output.println(e.getMessage() + " - " + "The dictionary does not contain the word you are looking for.");
-                    }
                 }
             }
         } catch (IOException e) {
