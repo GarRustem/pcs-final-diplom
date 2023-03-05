@@ -9,7 +9,6 @@ import java.util.stream.Collectors;
 
 public class BooleanSearchEngine implements SearchEngine {
     protected String[] words; // Заготовка. Будем собирать слова из текущей страницы, разделенные по regex, в массив.
-    protected Map<String, Integer> frequency = new HashMap<>(); // Заготовка. Промежуточный Map. Будем собирать слова из массива words в Map с key - слово, value - количество совпадений на странице.
     protected Map<String, List<PageEntry>> result = new HashMap<>(); // Заготовка. Результирующий Map. Будем собирать для каждого ключа-слова соответствующее значение-PageEntry().
     protected List<PageEntry> pageEntry;
 
@@ -27,6 +26,7 @@ public class BooleanSearchEngine implements SearchEngine {
                         int pages = doc.getNumberOfPages(); // Получаем количество страниц для каждого файла.
 
                         for (int i = 1; i <= pages; i++) { // Итерируем по страницам каждого файла.
+                            Map<String, Integer> frequency = new HashMap<>();
                             String pageContent = PdfTextExtractor.getTextFromPage(doc.getPage(i)); // Получаем контент каждой страницы файла.
                             words = pageContent.split("\\P{IsAlphabetic}+"); // Делим собранный текст на отдельные слова и собираем в массив.
                             for (String word : words) {
@@ -63,7 +63,7 @@ public class BooleanSearchEngine implements SearchEngine {
         if (result.containsKey(word.toLowerCase())) {
             pageEntry = result.get(word.toLowerCase());
         } else {
-            pageEntry = Collections.emptyList();
+            pageEntry = new ArrayList<>();
         }
         return pageEntry;
     }
